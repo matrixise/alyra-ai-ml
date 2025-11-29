@@ -4,4 +4,16 @@ version = "0.1.0"
 description = "Projet de développement IA - Formation Alyra"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "matplotlib>=3.10.7",
+    "pandas>=2.3.3",
+    "scikit-learn>=1.7.2",
+    "seaborn>=0.13.2",
+]
+
+[dependency-groups]
+dev = [
+    "ipython>=9.7.0",
+    "isort>=7.0.0",
+    "ruff>=0.14.7",
+]
