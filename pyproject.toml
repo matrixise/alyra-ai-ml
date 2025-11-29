@@ -5,6 +5,7 @@ description = "Projet de développement IA - Formation Alyra"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "fanalysis>=0.0.1",
     "matplotlib>=3.10.7",
     "pandas>=2.3.3",
     "scikit-learn>=1.7.2",
