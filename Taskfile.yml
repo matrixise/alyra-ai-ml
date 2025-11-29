@@ -1,0 +1,26 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  VENV_DIR: .venv
+  PYTHON: "{{.VENV_DIR}}/bin/python"
+  PIP: "{{.VENV_DIR}}/bin/pip"
+
+tasks:
+  venv:
+    desc: "Create Python virtual environment"
+    cmds:
+      - python -m venv {{.VENV_DIR}} --upgrade --upgrade-deps
+    status:
+      - test -d {{.VENV_DIR}}
+
+  install:
+    desc: "Install project dependencies"
+    deps: [venv]
+    cmds:
+      - "{{.PIP}} install -e ."
+    sources:
+      - pyproject.toml
+    generates:
+      - "{{.VENV_DIR}}/lib/python*/site-packages/*"
