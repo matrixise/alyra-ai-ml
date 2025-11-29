@@ -51,6 +51,12 @@ task venv
 task install
 ```
 
+### 5. Installer les hooks pre-commit
+
+```bash
+task pre-commit-install
+```
+
 ## Utilisation
 
 ### Commandes Task disponibles
@@ -67,6 +73,12 @@ task add -- pandas numpy
 
 # Ajouter une dépendance de développement
 task add-dev -- pytest black
+
+# Installer les hooks pre-commit
+task pre-commit-install
+
+# Exécuter pre-commit sur tous les fichiers
+task pre-commit-run
 
 # Lister toutes les tâches disponibles
 task --list
@@ -103,6 +115,7 @@ act -l
 ├── notebooks/          # Jupyter notebooks d'analyse
 ├── .venv/              # Environnement virtuel Python
 ├── .actrc              # Configuration act (GitHub Actions locales)
+├── .pre-commit-config.yaml  # Configuration pre-commit hooks
 ├── pyproject.toml      # Configuration du projet et dépendances
 ├── Taskfile.yml        # Définition des tâches Task
 └── README.md           # Ce fichier
@@ -125,9 +138,11 @@ act -l
 - **Task** - Task runner
 - **asdf** - Gestionnaire de versions d'outils
 - **act** - Test local des GitHub Actions
+- **pre-commit** - Git hooks pour la qualité du code
 - **ipython** - Shell Python interactif amélioré
-- **ruff** - Linter Python
+- **ruff** - Linter et formateur Python
 - **isort** - Tri des imports
+- **nbstripout** - Nettoyage des notebooks Jupyter
 
 ## Licence
 

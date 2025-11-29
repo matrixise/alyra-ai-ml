@@ -7,6 +7,7 @@ vars:
   PYTHON: "{{.VENV_DIR}}/bin/python"
   PIP: "{{.VENV_DIR}}/bin/pip"
   UV: "{{.VENV_DIR}}/bin/uv"
+  PRECOMMIT: "{{.VENV_DIR}}/bin/pre-commit"
 
 tasks:
   venv:
@@ -38,3 +39,17 @@ tasks:
     deps: [venv]
     cmds:
       - "{{.UV}} add --dev {{.CLI_ARGS}}"
+
+  pre-commit-install:
+    desc: Install pre-commit hooks
+    deps: [venv]
+    cmds:
+      - "{{.PRECOMMIT}} install"
+    status:
+      - test -f .git/hooks/pre-commit
+
+  pre-commit-run:
+    desc: Run pre-commit hooks on all files
+    deps: [venv]
+    cmds:
+      - "{{.PRECOMMIT}} run --all-files"
