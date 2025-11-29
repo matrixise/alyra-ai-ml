@@ -26,3 +26,15 @@ tasks:
       - pyproject.toml
     generates:
       - "{{.VENV_DIR}}/lib/python*/site-packages/*"
+
+  add:
+    desc: Install one or more packages
+    deps: [venv]
+    cmds:
+      - "{{.UV}} add {{.CLI_ARGS}}"
+
+  add-dev:
+    desc: Install one or more dev packages
+    deps: [venv]
+    cmds:
+      - "{{.UV}} add --dev {{.CLI_ARGS}}"
