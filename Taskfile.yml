@@ -53,3 +53,9 @@ tasks:
     deps: [venv]
     cmds:
       - "{{.PRECOMMIT}} run --all-files"
+
+  format:
+    desc: Format Python and Jupyter files with ruff
+    deps: [venv]
+    cmds:
+      - "{{.VENV_DIR}}/bin/ruff format ."
