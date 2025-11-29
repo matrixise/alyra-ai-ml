@@ -1,0 +1,7 @@
+[project]
+name = "alyra-ai-ml"
+version = "0.1.0"
+description = "Projet de développement IA - Formation Alyra"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
