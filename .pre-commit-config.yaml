@@ -37,15 +37,10 @@ repos:
   - repo: https://github.com/nbQA-dev/nbQA
     rev: 1.9.1
     hooks:
-      # Linter for notebooks
-      - id: nbqa
-        name: nbqa-ruff
-        args: [ruff, check, --fix]
-        additional_dependencies: [ruff==0.14.7]
       # Formatter for notebooks
       - id: nbqa
-        name: nbqa-ruff-format
-        args: [ruff, format]
+        name: nbqa-ruff
+        args: [ruff, --fix]
         additional_dependencies: [ruff==0.14.7]
 
   # Jupyter notebook cleaning
