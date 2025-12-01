@@ -22,7 +22,7 @@ tasks:
     desc: "Install project dependencies"
     deps: [venv]
     cmds:
-      - "{{.UV}} pip install -e ."
+      - "{{.UV}} pip install -e . --group dev"
     sources:
       - pyproject.toml
     generates:
