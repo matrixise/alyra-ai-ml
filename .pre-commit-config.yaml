@@ -33,6 +33,21 @@ repos:
       # Formatter
       - id: ruff-format
 
+  # Jupyter notebook linting and formatting with nbqa
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.9.1
+    hooks:
+      # Linter for notebooks
+      - id: nbqa
+        name: nbqa-ruff
+        args: [ruff, check, --fix]
+        additional_dependencies: [ruff==0.14.7]
+      # Formatter for notebooks
+      - id: nbqa
+        name: nbqa-ruff-format
+        args: [ruff, format]
+        additional_dependencies: [ruff==0.14.7]
+
   # Jupyter notebook cleaning
   - repo: https://github.com/kynan/nbstripout
     rev: 0.8.1
