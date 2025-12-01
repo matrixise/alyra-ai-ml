@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint & Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        if: ${{ !env.ACT }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install uv
+
+      - name: Install dependencies
+        run: |
+          uv pip install --system -e . --group dev
+
+      - name: Run ruff check
+        run: ruff check .
+
+      - name: Run ruff format check
+        run: ruff format --check .
+
+      - name: Run isort check on notebooks
+        run: nbqa isort --check notebooks/
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        if: ${{ !env.ACT }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install uv
+
+      - name: Install dependencies
+        run: |
+          uv pip install --system -e . --group dev
+
+      - name: Run pytest
+        run: pytest -v
+
+  notebook-quality:
+    name: Notebook Quality Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        if: ${{ !env.ACT }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install uv
+
+      - name: Install dependencies
+        run: |
+          uv pip install --system -e . --group dev
+
+      - name: Run nbqa ruff on notebooks
+        run: nbqa ruff check notebooks/
+
+      - name: Check notebook formatting
+        run: nbqa ruff format --check notebooks/
