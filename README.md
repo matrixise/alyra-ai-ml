@@ -16,6 +16,9 @@ Ce projet réalise une analyse exploratoire de données (EDA) et une Analyse Fac
 
 1. **EDA (Exploratory Data Analysis)** : Exploration et visualisation des données
 2. **AFC (Analyse Factorielle des Correspondances)** : Analyse des relations entre variables catégorielles
+3. **Sélection de modèles ML** : Évaluation et sélection d'un ou plusieurs modèles de machine learning
+4. **API FastAPI** : Exposition du modèle via une API REST
+5. **Interface Streamlit** (optionnel) : Interface web pour interagir avec le modèle
 
 ## Prérequis
 
