@@ -1,5 +1,7 @@
 # Projet de développement IA - Formation Alyra
 
+[![CI](https://github.com/matrixise/alyra-ai-ml/actions/workflows/ci.yml/badge.svg)](https://github.com/matrixise/alyra-ai-ml/actions/workflows/ci.yml)
+
 Projet d'analyse de données dans le cadre de la formation en développement IA d'Alyra.
 
 ## À propos
