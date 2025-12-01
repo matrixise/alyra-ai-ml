@@ -28,6 +28,12 @@ tasks:
     generates:
       - "{{.VENV_DIR}}/lib/python*/site-packages/*"
 
+  sync:
+    desc: "Sync venv with lockfile (uv.lock)"
+    deps: [venv]
+    cmds:
+      - "{{.UV}} sync --group dev"
+
   add:
     desc: Install one or more packages
     deps: [venv]
@@ -58,6 +64,7 @@ tasks:
     desc: Format Python and Jupyter files with ruff
     deps: [venv]
     cmds:
+      - "{{.VENV_DIR}}/bin/nbqa isort notebooks/eda.ipynb"
       - "{{.VENV_DIR}}/bin/ruff format ."
 
   test:
