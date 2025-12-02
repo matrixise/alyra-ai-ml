@@ -103,3 +103,9 @@ tasks:
     cmds:
       - "{{.UV}} lock --upgrade"
       - "{{.UV}} sync --group dev"
+
+  upgrade-tools:
+    desc: Upgrade pip and uv to latest versions
+    deps: [venv]
+    cmds:
+      - "{{.PIP}} install --upgrade pip uv"
