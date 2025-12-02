@@ -90,3 +90,16 @@ tasks:
     deps: [venv]
     cmds:
       - "{{.VENV_DIR}}/bin/alyra-ml train {{.CLI_ARGS}}"
+
+  outdated:
+    desc: Check for outdated dependencies
+    deps: [venv]
+    cmds:
+      - "{{.UV}} pip list --outdated"
+
+  upgrade:
+    desc: Upgrade dependencies to latest versions
+    deps: [venv]
+    cmds:
+      - "{{.UV}} lock --upgrade"
+      - "{{.UV}} sync --group dev"
