@@ -6,7 +6,7 @@ Projet d'analyse de données dans le cadre de la formation en développement IA 
 
 ## À propos
 
-Ce projet réalise une analyse exploratoire de données (EDA) et une Analyse Factorielle des Correspondances (AFC) sur un dataset de rétention des étudiants dans l'enseignement supérieur.
+Ce projet réalise une analyse exploratoire de données (EDA) et de la modélisation machine learning sur un dataset de rétention des étudiants dans l'enseignement supérieur.
 
 ### Dataset
 
@@ -17,10 +17,8 @@ Ce projet réalise une analyse exploratoire de données (EDA) et une Analyse Fac
 ### Objectifs
 
 1. **EDA (Exploratory Data Analysis)** : Exploration et visualisation des données
-2. **AFC (Analyse Factorielle des Correspondances)** : Analyse des relations entre variables catégorielles
-3. **Sélection de modèles ML** : Évaluation et sélection d'un ou plusieurs modèles de machine learning
-4. **API FastAPI** : Exposition du modèle via une API REST
-5. **Interface Streamlit** (optionnel) : Interface web pour interagir avec le modèle
+2. **Feature Engineering** : Création et sélection de features pertinentes
+3. **Modélisation ML** : Évaluation et sélection de modèles de machine learning pour prédire le dropout étudiant
 
 ## Prérequis
 
@@ -136,7 +134,8 @@ act -l
 - **matplotlib** - Visualisations
 - **seaborn** - Visualisations statistiques avancées
 - **scikit-learn** - Machine learning et analyses statistiques
-- **fanalysis** - Analyse Factorielle des Correspondances (AFC)
+- **xgboost** - Gradient boosting pour le machine learning
+- **joblib** - Sérialisation de modèles ML
 
 ### Outils de développement
 - **uv** - Gestionnaire de paquets Python rapide
