@@ -43,7 +43,22 @@ This project uses [Task](https://taskfile.dev/) as a task runner. Available task
 task --list
 ```
 
-(Additional commands to be populated as the project structure is established)
+#### Task Conventions
+- **Task descriptions**: Keep descriptions concise and focused on what the task does
+- **Do NOT include usage examples** in the `desc` field (e.g., avoid "usage: task name -- args")
+- Usage information should be documented in this file or discovered via `task --list`
+
+### Running Python Scripts
+
+All Python scripts should be executed using the virtual environment:
+
+```bash
+# From project root
+.venv/bin/python <script_path>
+
+# Example: Find similar diseases
+.venv/bin/python diseases_dl/scripts/find_similar_diseases.py "panic disorder" --top 10
+```
 
 ## Architecture Notes
 

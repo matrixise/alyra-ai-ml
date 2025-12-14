@@ -21,8 +21,7 @@ jobs:
 
       - name: Install uv
         run: |
-          python3 -m pip install --upgrade pip
-          pip install uv
+          python3 -m pip install --upgrade pip uv
 
       - name: Install dependencies
         run: |
@@ -51,8 +50,7 @@ jobs:
 
       - name: Install uv
         run: |
-          python3 -m pip install --upgrade pip
-          pip install uv
+          python3 -m pip install --upgrade pip uv
 
       - name: Install dependencies
         run: |

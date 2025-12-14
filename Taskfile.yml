@@ -64,7 +64,7 @@ tasks:
     desc: Format Python and Jupyter files with ruff
     deps: [venv]
     cmds:
-      - "{{.VENV_DIR}}/bin/nbqa isort notebooks/eda.ipynb"
+      - "{{.VENV_DIR}}/bin/nbqa isort notebooks/eda_minimal.ipynb"
       - "{{.VENV_DIR}}/bin/ruff format ."
 
   test:
