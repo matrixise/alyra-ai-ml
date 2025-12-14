@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from alyra_ai_ml.api.routes import router
 
+
 app = FastAPI(
     title="Alyra AI/ML API",
     description="API for Student Dropout Prediction",

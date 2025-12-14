@@ -10,6 +10,7 @@ Usage:
 
 import pandera.pandas as pa
 
+
 # from pandera import Column, Check, DataFrameSchema
 
 # Valeurs valides pour les variables catégorielles
@@ -254,9 +255,7 @@ StudentDataSchema = pa.DataFrameSchema(
             nullable=False,
             description="Besoins éducatifs spéciaux",
         ),
-        "Debtor": pa.Column(
-            int, pa.Check.isin([0, 1]), nullable=False, description="Débiteur"
-        ),
+        "Debtor": pa.Column(int, pa.Check.isin([0, 1]), nullable=False, description="Débiteur"),
         "Tuition fees up to date": pa.Column(
             int,
             pa.Check.isin([0, 1]),
@@ -360,9 +359,7 @@ StudentDataSchema = pa.DataFrameSchema(
             nullable=False,
             description="Taux d'inflation (%)",
         ),
-        "GDP": pa.Column(
-            float, pa.Check.in_range(-10, 10), nullable=False, description="PIB"
-        ),
+        "GDP": pa.Column(float, pa.Check.in_range(-10, 10), nullable=False, description="PIB"),
         # === Variable Cible ===
         "Target": pa.Column(
             str,
@@ -384,9 +381,7 @@ StudentDataSchema = pa.DataFrameSchema(
 
 
 # Schéma alternatif après renommage de "Nacionality" -> "Nationality"
-StudentDataSchemaRenamed = StudentDataSchema.remove_columns(
-    ["Nacionality"]
-).add_columns(
+StudentDataSchemaRenamed = StudentDataSchema.remove_columns(["Nacionality"]).add_columns(
     {
         "Nationality": pa.Column(
             int,

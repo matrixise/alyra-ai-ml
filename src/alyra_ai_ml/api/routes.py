@@ -4,6 +4,7 @@ from fastapi import APIRouter, HTTPException
 
 from alyra_ai_ml.api.schemas import PredictionRequest, PredictionResponse
 
+
 router = APIRouter()
 
 

@@ -9,6 +9,7 @@ from sklearn.base import BaseEstimator
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
+
 # Default models directory
 MODELS_DIR = Path(__file__).parent.parent.parent.parent.parent / "models"
 

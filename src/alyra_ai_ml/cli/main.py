@@ -5,6 +5,7 @@ from typing import Annotated
 
 import typer
 
+
 app = typer.Typer(
     name="alyra-ml",
     help="Alyra AI/ML - Student Dropout Prediction CLI",

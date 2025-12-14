@@ -6,10 +6,9 @@ import pandas as pd
 
 from alyra_ai_ml.schemas import StudentDataSchema, StudentDataSchemaRenamed
 
+
 # Default dataset path relative to project root
-DEFAULT_DATASET_PATH = (
-    Path(__file__).parent.parent.parent.parent.parent / "data" / "dataset.csv"
-)
+DEFAULT_DATASET_PATH = Path(__file__).parent.parent.parent.parent.parent / "data" / "dataset.csv"
 
 
 def strip_column_names(df: pd.DataFrame) -> pd.DataFrame:
