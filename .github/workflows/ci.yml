@@ -33,9 +33,6 @@ jobs:
       - name: Run ruff format check
         run: ruff format --check .
 
-      - name: Run isort check on notebooks
-        run: nbqa isort --check notebooks/
-
   test:
     name: Run Tests
     runs-on: ubuntu-latest
