@@ -81,7 +81,7 @@ jobs:
           uv pip install --system -e . --group dev
 
       - name: Run nbqa ruff on notebooks
-        run: nbqa ruff check notebooks/
+        run: nbqa ruff notebooks/
 
       - name: Check notebook formatting
         run: nbqa ruff format --check notebooks/

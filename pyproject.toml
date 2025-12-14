@@ -47,3 +47,36 @@ packages = ["src/alyra_ai_ml"]
 testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = ['-v']
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # Line too long (handled by formatter for notebooks)
+    "B905",  # zip() without explicit strict parameter
+    "B007",  # Loop control variable not used within loop body
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["alyra_ai_ml"]
+force-single-line = false
+lines-after-imports = 2
+
+[tool.isort]
+profile = "black"
+line_length = 100
+known_first_party = ["alyra_ai_ml"]
+skip_gitignore = true
+force_single_line = false
+lines_after_imports = 2
