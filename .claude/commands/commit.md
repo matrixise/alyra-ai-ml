@@ -1,3 +1,8 @@
+---
+allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Read, Grep, Glob
+description: Create a git commit with automatic message generation
+model: claude-haiku-4-5
+---
 # Claude Command: Commit
 
 This command helps you create well-formatted commits with conventional commit messages and emoji.
@@ -25,7 +30,7 @@ To create a commit, just type:
 - **Conventional commit format**: Use the format `emoji <type>: <description>`
 - **Present tense, imperative mood**: Write commit messages as commands (e.g., "add feature" not "added feature")
 - **Concise first line**: Keep the first line under 72 characters
-- **No Claude attribution**: NEVER mention Claude or Claude Code in commit messages
+- **CRITICAL - No attribution**: NEVER add "Generated with Claude Code", "Co-Authored-By: Claude", or any similar attribution to commits
 
 ## Commit Types and Emojis
 
@@ -64,37 +69,33 @@ When analyzing the diff, consider splitting commits based on these criteria:
 
 ## Examples
 
-**Good commit messages for this Django/Wagtail project:**
-- ✨ feat: add speaker bio field to Speaker model
-- ✨ feat: implement new StreamField block for video embeds
-- 🐛 fix: correct sponsor logo display on homepage
-- 🐛 fix: resolve meetup sync timezone issue
-- 📝 docs: update CLAUDE.md with new task commands
-- ♻️ refactor: simplify SpeakersPage queryset logic
-- ♻️ refactor: extract common page mixins to core app
-- 🎨 style: improve Wagtail admin panel layout
-- 🔥 chore: remove deprecated Meetup API v2 code
-- 📦️ chore: update Wagtail to 6.2.x
-- 📦️ chore: upgrade Django to 5.0.14
-- ➕ chore: add django-extensions for development
-- ➖ chore: remove unused celery dependency
-- 🚀 ci: update Heroku deployment configuration
-- 💚 fix: resolve failing Docker build
-- 🔒️ fix: patch Django security vulnerability
-- ♿️ feat: improve navigation accessibility for screen readers
-- 🗃️ chore: add migration for new Session fields
-- 🌐 feat: add French translation for sponsor pages
+**Good commit messages for this AI/ML project:**
+- ✨ feat: add BERT model for disease classification
+- ✨ feat: implement symptom similarity search with Jaccard index
+- 🐛 fix: resolve data preprocessing pipeline error
+- 🐛 fix: correct GPU memory allocation in training script
+- 📝 docs: update CLAUDE.md with Lightning Studio tasks
+- ♻️ refactor: extract data preprocessing to separate module
+- ♻️ refactor: simplify model evaluation metrics calculation
+- 🎨 style: improve notebook cell organization for EDA
+- 🔥 chore: remove deprecated baseline model code
+- 📦️ chore: update transformers to 4.36.0
+- ➕ chore: add lightning-ai dependency
+- ➖ chore: remove unused scikit-learn dependency
+- 🚀 ci: add model training workflow
+- ⚡️ perf: optimize dataset loading with caching
+- ✅ test: add unit tests for feature engineering
 
 **Example of splitting commits:**
 
-If you modify both a Wagtail page model AND update a management command, split into:
-1. ✨ feat: add session_type field to Session model
-2. ♻️ refactor: update import-sessionize command to handle new field
+If you modify both training script AND add new task commands, split into:
+1. ✨ feat: add T4 GPU support for Lightning Studio
+2. 🔧 chore: add Lightning Studio management tasks to Taskfile
 
-If you fix multiple unrelated issues, split into:
-1. 🐛 fix: correct speaker ordering on TalksPage
-2. 🐛 fix: resolve Redis connection timeout in dev settings
-3. 🗃️ chore: add missing migration for sponsors app
+If you work on multiple unrelated improvements, split into:
+1. 🐛 fix: resolve tokenizer padding issue in BERT model
+2. ⚡️ perf: optimize symptom vectorization performance
+3. 📝 docs: document model evaluation methodology
 
 ## Important Notes
 
@@ -103,4 +104,3 @@ If you fix multiple unrelated issues, split into:
 - The commit message will be constructed based on the changes detected
 - Before committing, the command will review the diff to identify if multiple commits would be more appropriate
 - If suggesting multiple commits, it will help you stage and commit the changes separately
-- **CRITICAL**: Never add "Generated with Claude Code" or similar attributions to commits
