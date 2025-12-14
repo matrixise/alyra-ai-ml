@@ -154,4 +154,4 @@ Projet académique - Formation Alyra
 
 ## Auteur
 
-Étudiant en développement IA - Alyra
+Stéphane Wirtel <stephane@wirtel.be>
