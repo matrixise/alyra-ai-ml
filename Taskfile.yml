@@ -73,24 +73,6 @@ tasks:
     cmds:
       - "{{.VENV_DIR}}/bin/pytest {{.CLI_ARGS}}"
 
-  api:
-    desc: Start the FastAPI server
-    deps: [venv]
-    cmds:
-      - "{{.VENV_DIR}}/bin/uvicorn alyra_ai_ml.api.main:app --reload"
-
-  cli:
-    desc: Run the CLI
-    deps: [venv]
-    cmds:
-      - "{{.VENV_DIR}}/bin/alyra-ml {{.CLI_ARGS}}"
-
-  train:
-    desc: Train a model
-    deps: [venv]
-    cmds:
-      - "{{.VENV_DIR}}/bin/alyra-ml train {{.CLI_ARGS}}"
-
   outdated:
     desc: Check for outdated dependencies
     deps: [venv]
@@ -109,3 +91,28 @@ tasks:
     deps: [venv]
     cmds:
       - "{{.PIP}} install --upgrade pip uv"
+
+  # ============================================================
+  # ML Pipeline Tasks
+  # ============================================================
+
+  ml:train:
+    desc: Train the dropout prediction model
+    deps: [venv]
+    cmds:
+      - "{{.PYTHON}} train_model.py {{.CLI_ARGS}}"
+
+  ml:predict:
+    desc: Run predictions on a CSV file
+    deps: [venv]
+    cmds:
+      - "{{.PYTHON}} predict.py {{.CLI_ARGS}}"
+
+  ml:pipeline:
+    desc: Run full pipeline (train + predict on test data)
+    deps: [venv]
+    cmds:
+      - task: ml:train
+      - task: ml:predict
+        vars:
+          CLI_ARGS: "data/dataset.csv"
