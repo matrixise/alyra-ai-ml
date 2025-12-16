@@ -10,6 +10,14 @@ import numpy as np
 import pandas as pd
 
 
+# Palette de couleurs pour éviter les warnings
+BINARY_TARGET_COLORS = ["#e74c3c", "#2ecc71"]
+BINARY_TARGET_ORDER = ["Dropout", "Non-Dropout"]
+MAP_BINARY_TARGET_COLORS = dict(zip(BINARY_TARGET_ORDER, BINARY_TARGET_COLORS))
+
+TERNARY_TARGET_COLORS = ["#66c2a5", "#fc8d62", "#8da0cb"]
+
+
 def print_dataset_summary(name: str, X: pd.DataFrame, y: pd.Series, total_size: int) -> None:
     """
     Affiche un résumé statistique d'un dataset (train/test).
@@ -24,9 +32,9 @@ def print_dataset_summary(name: str, X: pd.DataFrame, y: pd.Series, total_size: 
     dropout_count = y.sum()
     dropout_rate = y.mean()
 
-    print(f"\n  {name}: {n_samples} samples ({n_samples / total_size:.0%})")
-    print(f"    - Dropout: {dropout_count} ({dropout_rate:.1%})")
-    print(f"    - Non-Dropout: {n_samples - dropout_count} ({1 - dropout_rate:.1%})")
+    print(f"{name}: {n_samples} samples ({n_samples / total_size:.0%})")
+    print(f"- Dropout: {dropout_count} ({dropout_rate:.1%})")
+    print(f"- Non-Dropout: {n_samples - dropout_count} ({1 - dropout_rate:.1%})")
 
 
 def count_outliers_iqr(df: pd.DataFrame, column: str) -> tuple[int, float, float]:
@@ -60,6 +68,35 @@ def count_outliers_iqr(df: pd.DataFrame, column: str) -> tuple[int, float, float
 
 
 def prepare_feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Crée des features dérivées pour améliorer la prédiction du dropout.
+
+    Features créées et leur intérêt :
+
+    **Performance académique :**
+    - Success_Rate_Sem1/Sem2 : Taux de réussite par semestre. Un taux faible
+      est un signal fort de risque d'abandon (corrélation directe avec le dropout).
+    - Avg_Grade : Note moyenne sur l'année. Synthétise la performance globale.
+    - Total_Approved : Total d'unités validées. Mesure la progression concrète.
+    - Performance_Trend : Évolution entre sem1 et sem2. Une tendance négative
+      peut indiquer un décrochage progressif.
+
+    **Profil sociodémographique :**
+    - Marital_Binary : Solo vs Couple. Les étudiants seuls peuvent avoir moins
+      de support familial, facteur de risque potentiel.
+    - Education_Level : Niveau d'études antérieur regroupé. Les étudiants venant
+      du secondaire vs supérieur ont des profils de risque différents.
+    - Course_Domain : Domaine d'études (Tech, Santé, Business...). Certains
+      domaines ont des taux d'abandon plus élevés.
+    - Age_Group : Tranches d'âge. Les étudiants plus âgés (>25 ans) ont souvent
+      des contraintes professionnelles/familiales augmentant le risque.
+
+    Args:
+        df: DataFrame avec les colonnes brutes du dataset
+
+    Returns:
+        DataFrame enrichi avec les nouvelles features
+    """
     df["Success_Rate_Sem1"] = df["Curricular units 1st sem (approved)"] / df[
         "Curricular units 1st sem (enrolled)"
     ].replace(0, np.nan)
@@ -105,4 +142,46 @@ def prepare_feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
     }
     df["Course_Domain"] = df["Course"].map(course_domains)
 
+    df["Age_Group"] = pd.cut(
+        df["Age at enrollment"],
+        bins=[0, 20, 25, 35, 100],
+        labels=["17-20", "21-25", "26-35", "36+"],
+    )
     return df
+
+
+def barh_metric(ax, df, metric, title, xlim, text_offset, colors):
+    """
+    Affiche un bar chart horizontal avec barres d'erreur pour comparer des modèles.
+
+    Args:
+        ax: Axes matplotlib sur lequel dessiner
+        df: DataFrame avec colonnes 'model', '{metric}-mean', '{metric}-std'
+        metric: Nom de la métrique (ex: 'accuracy', 'f1')
+        title: Titre du graphique
+        xlim: Tuple (min, max) pour l'axe X
+        text_offset: Décalage pour les annotations de valeurs
+        colors: Liste de couleurs pour les barres
+    """
+    y = df["model"]
+    mean = df[f"{metric}-mean"]
+    std = df[f"{metric}-std"]
+
+    bars = ax.barh(
+        y,
+        mean,
+        xerr=std,
+        color=colors[: len(df)],
+        alpha=0.8,
+        capsize=5,
+    )
+
+    ax.set_xlabel(metric.upper(), fontsize=12)
+    ax.set_title(title, fontsize=14, fontweight="bold")
+    ax.set_xlim(*xlim)
+
+    # Annotations
+    for i, (v, s) in enumerate(zip(mean, std)):
+        ax.text(v + s + text_offset, i, f"{v:.3f}", va="center", fontsize=10)
+
+    return bars
