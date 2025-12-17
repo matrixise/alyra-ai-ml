@@ -116,3 +116,12 @@ tasks:
       - task: ml:predict
         vars:
           CLI_ARGS: "data/dataset.csv"
+
+  # ============================================================
+  # CI Tasks
+  # ============================================================
+
+  ci:act:
+    desc: Run GitHub Actions workflow locally with act
+    cmds:
+      - act push --container-architecture linux/amd64 {{.CLI_ARGS}}
