@@ -125,3 +125,8 @@ tasks:
     desc: Run GitHub Actions workflow locally with act
     cmds:
       - act push --container-architecture linux/amd64 {{.CLI_ARGS}}
+
+  ci:workflows:
+    desc: List GitHub Actions workflows
+    cmds:
+      - gh workflow list {{.CLI_ARGS}}
