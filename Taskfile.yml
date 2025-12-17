@@ -92,8 +92,8 @@ tasks:
     cmds:
       - "{{.UV}} lock --upgrade"
       - "{{.UV}} sync --group dev"
-      - git add uv.lock
-      - git diff --cached --quiet || git commit -m "📦 chore: upgrade dependencies"
+      - "git add uv.lock"
+      - "git diff --cached --quiet || git commit -m '📦 chore: upgrade dependencies'"
 
   upgrade-tools:
     desc: Upgrade pip and uv to latest versions
@@ -139,3 +139,12 @@ tasks:
     desc: List GitHub Actions workflows
     cmds:
       - gh workflow list {{.CLI_ARGS}}
+
+  # ============================================================
+  # Git Tasks
+  # ============================================================
+
+  commit:
+    desc: Create a commit using Claude Code
+    cmds:
+      - claude -p "/commit"
