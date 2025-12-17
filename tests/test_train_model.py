@@ -1,14 +1,10 @@
 """Tests for train_model.py"""
 
-import numpy as np
 import pandas as pd
 import pytest
 
-from train_model import (
-    create_target_variable,
-    engineer_features,
-    get_feature_sets,
-)
+from alyra_ai_ml import engineer_features, get_feature_sets
+from train_model import create_target_variable
 
 
 class TestCreateTargetVariable:
@@ -133,46 +129,51 @@ class TestEngineerFeatures:
 class TestGetFeatureSets:
     """Tests for get_feature_sets function."""
 
-    def test_returns_four_elements(self) -> None:
-        """Should return tuple of 4 elements."""
+    def test_returns_three_elements_by_default(self) -> None:
+        """Should return tuple of 3 elements by default."""
         result = get_feature_sets()
+        assert len(result) == 3
+
+    def test_returns_four_elements_with_target(self) -> None:
+        """Should return tuple of 4 elements when include_target=True."""
+        result = get_feature_sets(include_target=True)
         assert len(result) == 4
 
     def test_numeric_features_count(self) -> None:
         """Should return 7 numeric features."""
-        numeric, _, _, _ = get_feature_sets()
+        numeric, _, _ = get_feature_sets()
         assert len(numeric) == 7
 
     def test_categorical_features_count(self) -> None:
         """Should return 4 categorical features."""
-        _, categorical, _, _ = get_feature_sets()
+        _, categorical, _ = get_feature_sets()
         assert len(categorical) == 4
 
     def test_binary_features_count(self) -> None:
         """Should return 5 binary features."""
-        _, _, binary, _ = get_feature_sets()
+        _, _, binary = get_feature_sets()
         assert len(binary) == 5
 
     def test_target_name(self) -> None:
         """Should return correct target name."""
-        _, _, _, target = get_feature_sets()
+        _, _, _, target = get_feature_sets(include_target=True)
         assert target == "Dropout_Binary"
 
     def test_numeric_features_content(self) -> None:
         """Should contain expected numeric features."""
-        numeric, _, _, _ = get_feature_sets()
+        numeric, _, _ = get_feature_sets()
         assert "Success_Rate_Sem1" in numeric
         assert "Avg_Grade" in numeric
         assert "Age at enrollment" in numeric
 
     def test_categorical_features_content(self) -> None:
         """Should contain expected categorical features."""
-        _, categorical, _, _ = get_feature_sets()
+        _, categorical, _ = get_feature_sets()
         assert "Age_Group" in categorical
         assert "Course_Domain" in categorical
 
     def test_binary_features_content(self) -> None:
         """Should contain expected binary features."""
-        _, _, binary, _ = get_feature_sets()
+        _, _, binary = get_feature_sets()
         assert "Gender" in binary
         assert "Scholarship holder" in binary

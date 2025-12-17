@@ -1,10 +1,9 @@
 """Tests for predict.py"""
 
 import numpy as np
-import pandas as pd
-import pytest
 
-from predict import classify_risk_level, get_feature_sets
+from alyra_ai_ml import get_feature_sets
+from predict import classify_risk_level
 
 
 class TestClassifyRiskLevel:
@@ -54,10 +53,10 @@ class TestClassifyRiskLevel:
 
 
 class TestGetFeatureSets:
-    """Tests for get_feature_sets function in predict module."""
+    """Tests for get_feature_sets function from shared module."""
 
-    def test_returns_three_elements(self) -> None:
-        """Should return tuple of 3 elements (no target)."""
+    def test_returns_three_elements_by_default(self) -> None:
+        """Should return tuple of 3 elements by default (no target)."""
         result = get_feature_sets()
         assert len(result) == 3
 
@@ -73,14 +72,3 @@ class TestGetFeatureSets:
         numeric, categorical, binary = get_feature_sets()
         total = len(numeric) + len(categorical) + len(binary)
         assert total == 16
-
-    def test_consistency_with_train_model(self) -> None:
-        """Feature sets should match train_model.py (without target)."""
-        from train_model import get_feature_sets as train_get_feature_sets
-
-        predict_numeric, predict_cat, predict_bin = get_feature_sets()
-        train_numeric, train_cat, train_bin, _ = train_get_feature_sets()
-
-        assert predict_numeric == train_numeric
-        assert predict_cat == train_cat
-        assert predict_bin == train_bin

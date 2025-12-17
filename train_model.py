@@ -23,12 +23,15 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
+from alyra_ai_ml import (
+    DATA_PATH,
+    MODEL_PATH,
+    RANDOM_SEED,
+    TEST_SIZE,
+    engineer_features,
+    get_feature_sets,
+)
 
-# Configuration globale
-RANDOM_SEED = 42
-TEST_SIZE = 0.2
-DATA_PATH = Path('data/dataset.csv')
-MODEL_OUTPUT_PATH = Path('models/dropout_predictor.pkl')
 
 # Définir les graines aléatoires pour la reproductibilité
 np.random.seed(RANDOM_SEED)
@@ -69,133 +72,6 @@ def create_target_variable(df: pd.DataFrame) -> pd.DataFrame:
     console.print("[green]✓[/green] Variable cible créée. Distribution:")
     console.print(f"    {df['Dropout_Binary'].value_counts().to_dict()}")
     return df
-
-
-def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Applique l'ingénierie des caractéristiques au DataFrame.
-
-    Cette fonction crée les caractéristiques identiques au notebook eda_minimal.ipynb :
-
-    **Performance académique :**
-    - Success_Rate_Sem1/Sem2 : Taux de réussite par semestre (corrélation forte avec dropout)
-    - Avg_Grade : Note moyenne sur l'année
-    - Total_Approved : Total d'unités validées
-    - Performance_Trend : Évolution entre sem1 et sem2
-
-    **Profil sociodémographique :**
-    - Age_Group : Tranches d'âge [17-20, 21-25, 26-35, 36+]
-    - Marital_Binary : Solo vs Couple
-    - Education_Level : Secondaire, Supérieur, Autre
-    - Course_Domain : Tech, Santé, Business, etc.
-
-    Args:
-        df: DataFrame avec les données brutes
-
-    Returns:
-        DataFrame avec les nouvelles caractéristiques
-    """
-    # 1. Taux de réussite du 1er semestre
-    df['Success_Rate_Sem1'] = (
-        df['Curricular units 1st sem (approved)'] /
-        df['Curricular units 1st sem (enrolled)'].replace(0, np.nan)
-    )
-
-    # 2. Taux de réussite du 2ème semestre
-    df['Success_Rate_Sem2'] = (
-        df['Curricular units 2nd sem (approved)'] /
-        df['Curricular units 2nd sem (enrolled)'].replace(0, np.nan)
-    )
-
-    # 3. Note moyenne annuelle
-    df['Avg_Grade'] = (
-        df['Curricular units 1st sem (grade)'] +
-        df['Curricular units 2nd sem (grade)']
-    ) / 2
-
-    # 4. Total d'unités validées
-    df['Total_Approved'] = (
-        df['Curricular units 1st sem (approved)'] +
-        df['Curricular units 2nd sem (approved)']
-    )
-
-    # 5. Évolution de performance entre semestres
-    df['Performance_Trend'] = (
-        df['Curricular units 2nd sem (grade)'] -
-        df['Curricular units 1st sem (grade)']
-    )
-
-    # 6. Statut marital binaire (Solo vs Couple)
-    solo_categories = [1, 3, 4, 6]  # Célibataire, Veuf, Divorcé, Séparé
-    df['Marital_Binary'] = df['Marital status'].apply(
-        lambda x: 'Solo' if x in solo_categories else 'Couple'
-    )
-
-    # 7. Niveau d'éducation antérieur
-    secondaire = [1, 9, 10, 12, 14, 15, 19, 38]
-    superieur = [2, 3, 4, 5, 6, 39, 40, 42, 43]
-    df['Education_Level'] = df['Previous qualification'].apply(
-        lambda x: 'Secondaire' if x in secondaire else 'Supérieur' if x in superieur else 'Autre'
-    )
-
-    # 8. Domaine d'études
-    course_domains = {
-        33: 'Tech', 171: 'Arts', 8014: 'Social', 9003: 'Sciences',
-        9070: 'Arts', 9085: 'Santé', 9119: 'Tech', 9130: 'Sciences',
-        9147: 'Business', 9238: 'Social', 9254: 'Business', 9500: 'Santé',
-        9556: 'Santé', 9670: 'Business', 9773: 'Arts', 9853: 'Education',
-        9991: 'Business',
-    }
-    df['Course_Domain'] = df['Course'].map(course_domains)
-
-    # 9. Groupes d'âge
-    df['Age_Group'] = pd.cut(
-        df['Age at enrollment'],
-        bins=[0, 20, 25, 35, 100],
-        labels=['17-20', '21-25', '26-35', '36+']
-    )
-
-    return df
-
-
-def get_feature_sets() -> tuple[list[str], list[str], list[str], str]:
-    """
-    Définit les ensembles de caractéristiques selon le notebook eda_minimal.ipynb.
-
-    Returns:
-        Tuple (numeric_features, categorical_features, binary_features, target)
-    """
-    # Features numériques (7 features)
-    numeric_features = [
-        'Success_Rate_Sem1',
-        'Success_Rate_Sem2',
-        'Avg_Grade',
-        'Total_Approved',
-        'Age at enrollment',
-        'Admission grade',
-        'Performance_Trend',
-    ]
-
-    # Features catégorielles créées par feature engineering (4 features)
-    categorical_features = [
-        'Age_Group',
-        'Course_Domain',
-        'Marital_Binary',
-        'Education_Level',
-    ]
-
-    # Features binaires déjà encodées 0/1 (5 features)
-    binary_features = [
-        'Tuition fees up to date',
-        'Scholarship holder',
-        'Debtor',
-        'Gender',
-        'Displaced',
-    ]
-
-    target = 'Dropout_Binary'
-
-    return numeric_features, categorical_features, binary_features, target
 
 
 def create_preprocessing_pipeline(
@@ -240,7 +116,8 @@ def create_preprocessing_pipeline(
 def train_model(
     X_train: pd.DataFrame,
     y_train: pd.Series,
-    preprocessor: ColumnTransformer
+    preprocessor: ColumnTransformer,
+    seed: int = RANDOM_SEED,
 ) -> Pipeline:
     """
     Entraîne le modèle de régression logistique.
@@ -249,6 +126,7 @@ def train_model(
         X_train: Données d'entraînement
         y_train: Cible d'entraînement
         preprocessor: Pipeline de prétraitement
+        seed: Graine aléatoire
 
     Returns:
         Pipeline entraîné
@@ -257,7 +135,7 @@ def train_model(
 
     pipeline = Pipeline([
         ('preprocessor', preprocessor),
-        ('classifier', LogisticRegression(max_iter=1000, random_state=RANDOM_SEED))
+        ('classifier', LogisticRegression(max_iter=1000, random_state=seed))
     ])
 
     pipeline.fit(X_train, y_train)
@@ -340,7 +218,7 @@ def main(
             '-o', '--output',
             help="Chemin de sortie pour le modèle entraîné"
         )
-    ] = MODEL_OUTPUT_PATH,
+    ] = MODEL_PATH,
     test_size: Annotated[
         float,
         typer.Option(
@@ -377,7 +255,9 @@ def main(
     console.print(f"[green]✓[/green] Caractéristiques créées. Nouvelle forme: {df.shape}")
 
     # 4. Définir les ensembles de caractéristiques
-    numeric_features, categorical_features, binary_features, target = get_feature_sets()
+    numeric_features, categorical_features, binary_features, target = get_feature_sets(
+        include_target=True
+    )
     all_features = numeric_features + categorical_features + binary_features
 
     # 5. Préparer X et y
@@ -429,7 +309,7 @@ def main(
     )
 
     # 9. Entraîner le modèle
-    pipeline = train_model(X_train, y_train, preprocessor)
+    pipeline = train_model(X_train, y_train, preprocessor, seed)
 
     # 10. Évaluer le modèle
     _, accuracy = evaluate_model(pipeline, X_test, y_test)
