@@ -1,6 +1,6 @@
 # Projet de développement IA - Formation Alyra
 
-[![CI](https://github.com/matrixise/alyra-ai-ml/actions/workflows/ci.yml/badge.svg)](https://github.com/matrixise/alyra-ai-ml/actions/workflows/ci.yml)
+[![Tests](https://github.com/matrixise/alyra-ai-ml/actions/workflows/tests.yml/badge.svg)](https://github.com/matrixise/alyra-ai-ml/actions/workflows/tests.yml)
 
 Projet d'analyse de données et de prédiction du risque d'abandon scolaire dans l'enseignement supérieur.
 
