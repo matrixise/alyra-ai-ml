@@ -30,11 +30,14 @@ This is a Machine Learning project for predicting student dropout risk in higher
 │   └── dropout_predictor.pkl
 ├── notebooks/              # Jupyter notebooks for EDA
 │   └── eda_minimal.ipynb
+├── src/alyra_ai_ml/        # Shared module
+│   ├── __init__.py         # Module exports
+│   ├── constants.py        # Shared constants (paths, seeds)
+│   └── features.py         # Feature engineering functions
 ├── tests/                  # Unit tests
 │   ├── conftest.py         # Pytest fixtures
 │   ├── test_train_model.py
 │   └── test_predict.py
-├── docs/                   # Documentation
 ├── train_model.py          # Training script (Typer CLI)
 ├── predict.py              # Prediction script (Typer CLI)
 ├── pyproject.toml          # Project config and dependencies
@@ -106,6 +109,29 @@ task format
 task pre-commit-run
 ```
 
+### Dependency Management
+
+```bash
+# Check outdated dependencies
+task outdated
+
+# Upgrade dependencies
+task upgrade
+
+# Upgrade and commit automatically
+task upgrade-commit
+```
+
+### CI Tasks
+
+```bash
+# List GitHub Actions workflows
+task ci:workflows
+
+# Run workflows locally with act
+task ci:act
+```
+
 #### Task Conventions
 
 - **Task descriptions**: Keep descriptions concise and focused on what the task does
@@ -142,6 +168,8 @@ Both scripts use Typer with `Annotated` types for modern CLI definition:
 
 | File | Purpose |
 |------|---------|
+| `src/alyra_ai_ml/constants.py` | Shared constants (paths, random seed) |
+| `src/alyra_ai_ml/features.py` | Feature engineering (`engineer_features()`, `get_feature_sets()`) |
 | `train_model.py` | Training pipeline with feature engineering |
 | `predict.py` | Inference script with risk level classification |
 | `notebooks/eda_minimal.ipynb` | Exploratory data analysis |

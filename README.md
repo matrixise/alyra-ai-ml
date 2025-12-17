@@ -112,6 +112,29 @@ Le modèle classifie les étudiants en 4 niveaux de risque :
 | **Élevé** | 50-75% | Intervention proactive, accompagnement personnalisé |
 | **Critique** | > 75% | Action urgente, mobilisation immédiate |
 
+### Gestion des dépendances
+
+```bash
+# Vérifier les dépendances obsolètes
+task outdated
+
+# Mettre à jour les dépendances
+task upgrade
+
+# Mettre à jour et commiter automatiquement
+task upgrade-commit
+```
+
+### CI/CD
+
+```bash
+# Lister les workflows GitHub Actions
+task ci:workflows
+
+# Tester les workflows localement avec act
+task ci:act
+```
+
 ### Autres commandes Task
 
 ```bash
@@ -164,11 +187,14 @@ act -l
 │   └── dropout_predictor.pkl
 ├── notebooks/              # Jupyter notebooks d'analyse
 │   └── eda_minimal.ipynb   # EDA principal
+├── src/alyra_ai_ml/        # Module partagé
+│   ├── __init__.py         # Exports du module
+│   ├── constants.py        # Constantes partagées
+│   └── features.py         # Feature engineering
 ├── tests/                  # Tests unitaires
 │   ├── conftest.py
 │   ├── test_train_model.py
 │   └── test_predict.py
-├── docs/                   # Documentation
 ├── train_model.py          # Script d'entraînement (CLI Typer)
 ├── predict.py              # Script de prédiction (CLI Typer)
 ├── pyproject.toml          # Configuration du projet
